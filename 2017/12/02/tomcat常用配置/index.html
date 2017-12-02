@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,并发," />
+  <meta name="keywords" content="java,配置与优化," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="取消与关闭java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。 任务取消在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。 设置某个“已请求取消”标志，任务定期检查该标志。具体实现上，一般通过一个volatile的标记 pub">
-<meta name="keywords" content="java,并发">
+<meta name="description" content="JVM常用配置jdk1.8完整配置 -XX:MaxHeapSize=size -XX:MaxHeapFreeRatio=percent -XX:MaxMetaspaceSize=size -XX:MaxNewSize=size -XX:NewRatio=ratio Tomcat常用配置Executor配置历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过元素">
+<meta name="keywords" content="java,配置与优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java 多线程任务取消与关闭">
-<meta property="og:url" content="http://yoursite.com/2017/08/12/java多线程/index.html">
+<meta property="og:title" content="tomcat与jvm常用配置">
+<meta property="og:url" content="http://yoursite.com/2017/12/02/tomcat常用配置/index.html">
 <meta property="og:site_name" content="yiduyangyi">
-<meta property="og:description" content="取消与关闭java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。 任务取消在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。 设置某个“已请求取消”标志，任务定期检查该标志。具体实现上，一般通过一个volatile的标记 pub">
+<meta property="og:description" content="JVM常用配置jdk1.8完整配置 -XX:MaxHeapSize=size -XX:MaxHeapFreeRatio=percent -XX:MaxMetaspaceSize=size -XX:MaxNewSize=size -XX:NewRatio=ratio Tomcat常用配置Executor配置历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过元素">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-02T07:11:47.916Z">
+<meta property="og:updated_time" content="2017-12-02T07:16:58.784Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java 多线程任务取消与关闭">
-<meta name="twitter:description" content="取消与关闭java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。 任务取消在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。 设置某个“已请求取消”标志，任务定期检查该标志。具体实现上，一般通过一个volatile的标记 pub">
+<meta name="twitter:title" content="tomcat与jvm常用配置">
+<meta name="twitter:description" content="JVM常用配置jdk1.8完整配置 -XX:MaxHeapSize=size -XX:MaxHeapFreeRatio=percent -XX:MaxMetaspaceSize=size -XX:MaxNewSize=size -XX:NewRatio=ratio Tomcat常用配置Executor配置历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过元素">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/12/java多线程/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/02/tomcat常用配置/"/>
 
 
 
 
 
-  <title>java 多线程任务取消与关闭 | yiduyangyi</title>
+  <title>tomcat与jvm常用配置 | yiduyangyi</title>
   
 
 
@@ -243,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/java多线程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/02/tomcat常用配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yangjinfeng">
@@ -260,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">java 多线程任务取消与关闭</h1>
+          <h1 class="post-title" itemprop="name headline">tomcat与jvm常用配置</h1>
         
 
         <div class="post-meta">
@@ -272,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T09:33:40+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-02T14:56:11+08:00">
+                2017-12-02
               </time>
             
 
@@ -306,8 +306,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">java并发编程</span>
+                  <a href="/categories/java/配置与优化/" itemprop="url" rel="index">
+                    <span itemprop="name">配置与优化</span>
                   </a>
                 </span>
 
@@ -343,103 +343,98 @@
       
 
       
-        <h1 id="取消与关闭"><a href="#取消与关闭" class="headerlink" title="取消与关闭"></a>取消与关闭</h1><p>java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。</p>
-<h2 id="任务取消"><a href="#任务取消" class="headerlink" title="任务取消"></a>任务取消</h2><p>在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。</p>
-<h3 id="设置某个“已请求取消”标志，任务定期检查该标志。"><a href="#设置某个“已请求取消”标志，任务定期检查该标志。" class="headerlink" title="设置某个“已请求取消”标志，任务定期检查该标志。"></a>设置某个“已请求取消”标志，任务定期检查该标志。</h3><p>具体实现上，一般通过一个volatile的标记</p>
-<pre><code>public class Task implement Runnable {
-
-    private volatile boolean cancelled;
-
-    public void run() {
-        while(!cancelled) {
-
-        }
-    }
-
-    public void cancel() {
-        cancelled = true;
-    }
-
-}
-</code></pre><p>这种方案有一个缺陷，如果任务调用了一个阻塞方法，比如BlockingQueue.put, 那么，任务可能永远不会去检查取消标志，也就永远不会结束。</p>
-<pre><code>public class BrokenPrimeProducer extends Thread {
-    private final BlockingQueue&lt;BigInteger&gt; queue;
-    private volatile boolean cancelled = false;
-
-    BrokenPrimeProducer(BlockingQueue&lt;BigInteger&gt; queue) {
-        this.queue = queue;
-    }
-
-    public void run() {
-        try {
-            BigInteger p = BigInteger.ONE;
-            while (!cancelled) {
-                queue.put(p = p.nextProbablePrime());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void cancel() {
-        cancelled = true;
-    }
-}
-</code></pre><h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>java的一些特殊的阻塞库的方法支持中断。线程中断是一种协作机制，可用来终止线程。</p>
-<p>每个线程都有一个boolean的中断状态。中断线程时，该状态将会被设置为true，Thread类中，</p>
-<pre><code>public class Thread {
-    // 中断目标线程
-    public void interrupt() {}
-
-    // 清除当前线程的中断状态
-    public static boolean interrupted() {}
-
-    // 返回目标线程的中断状态
-    public boolean isInterrupted() {}
-}
-</code></pre><p>阻塞库的方法，如Thread.sleep和Object.wait等都会检查线程何时中断，并且在发生中断时返回。响应中断执行的操作包括：清除中断状态，抛出InterruptedException。JVM不保证阻塞方法检测到中断的速度，但通常响应速度还是非常快的。</p>
-<p>注意：调用interrupt并不意味着立即停止目标线程正在进行的工作，而只是传递了请求中断的消息。</p>
-<p>前面例子中的问题如果用中断来解决如下，使用中断而不是boolean标志来取消即可。</p>
-<pre><code>public class BrokenPrimeProducer extends Thread {
-    private final BlockingQueue&lt;BigInteger&gt; queue;
-
-    BrokenPrimeProducer(BlockingQueue&lt;BigInteger&gt; queue) {
-        this.queue = queue;
-    }
-
-    public void run() {
-        try {
-            BigInteger p = BigInteger.ONE;
-            while (!Thread.currentThread().isInterrupted()) {
-                queue.put(p = p.nextProbablePrime());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void cancel() {
-        interrupt();
-    }
-}
-</code></pre><p><strong>一般而言，中断是实现取消的最合理的方式。</strong></p>
-<ul>
-<li>处理时机</li>
+        <h1 id="JVM常用配置"><a href="#JVM常用配置" class="headerlink" title="JVM常用配置"></a>JVM常用配置</h1><p><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" title="官方文档" target="_blank" rel="external">jdk1.8完整配置</a></p>
+<pre><code>-XX:MaxHeapSize=size
+-XX:MaxHeapFreeRatio=percent
+-XX:MaxMetaspaceSize=size
+-XX:MaxNewSize=size
+-XX:NewRatio=ratio
+</code></pre><h1 id="Tomcat常用配置"><a href="#Tomcat常用配置" class="headerlink" title="Tomcat常用配置"></a>Tomcat常用配置</h1><h2 id="Executor配置"><a href="#Executor配置" class="headerlink" title="Executor配置"></a>Executor配置</h2><p>历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过<executor>元素，则可以为不同Connector，甚至不同组件，配置共享thread pool。</executor></p>
+<pre><code>&lt;Executor
+     name=&quot;tomcatThreadPool&quot;
+     namePrefix=&quot;catalina-exec-&quot;
+     maxThreads=&quot;500&quot;
+     minSpareThreads=&quot;30&quot;
+     maxIdleTime=&quot;60000&quot;
+     prestartminSpareThreads = &quot;true&quot;
+     maxQueueSize = &quot;100&quot;
+/&gt;
+</code></pre><ul>
+<li>maxThreads：最大并发线程数。默认200，一般设置500~800，根据硬件配置调整  </li>
+<li>minSpareThreads：tomcat初始化时创建的线程数   </li>
+<li>maxIdleTime：如果当前线程大于初始化线程，空闲线程存活的时间，单位毫秒   </li>
+<li>prestartminSpareThreads：在Tomcat初始化的时候就初始化minSpareThreads的参数值，如果不等于true，minSpareThreads的值就没啥效果了    </li>
+<li>maxQueueSize：最大的等待队列数，超过则拒绝请求    </li>
 </ul>
-<p>显然，作为一种协作机制，不会强求被中断线程一定要在某个点进行处理。实际上，被中断线程只需在合适的时候处理即可，如果没有合适的时间点，甚至可以不处理，这时候在任务处理层面，就跟没有调用中断方法一样。“合适的时候”与线程正在处理的业务逻辑紧密相关，例如，每次迭代的时候，进入一个可能阻塞且无法中断的方法之前等，但多半不会出现在某个临界区更新另一个对象状态的时候，因为这可能会导致对象处于不一致状态。</p>
-<ul>
-<li>处理方式</li>
+<h2 id="Connector设置"><a href="#Connector设置" class="headerlink" title="Connector设置"></a>Connector设置</h2><pre><code>&lt;Connector
+ executor=&quot;tomcatThreadPool&quot;
+ port=&quot;8080&quot;
+ protocol=&quot;org.apache.coyote.http11.Http11Nio2Protocol&quot;
+ connectionTimeout=&quot;60000&quot;
+ maxConnections=&quot;10000&quot;
+ redirectPort=&quot;8443&quot;
+ enableLookups=&quot;false&quot;
+ acceptCount=&quot;100&quot;
+ maxPostSize=&quot;10485760&quot;
+ maxHttpHeaderSize=&quot;8192&quot;
+ compression=&quot;on&quot;
+ disableUploadTimeout=&quot;true&quot;
+ compressionMinSize=&quot;2048&quot;
+ acceptorThreadCount=&quot;2&quot;
+ compressableMimeType=&quot;text/html,text/plain,text/css,application/javascript,application/json,application/x-font-ttf,application/x-font-otf,image/svg+xml,image/jpeg,image/png,image/gif,audio/mpeg,video/mp4&quot;
+ URIEncoding=&quot;utf-8&quot;
+ processorCache=&quot;20000&quot;
+ tcpNoDelay=&quot;true&quot;
+ server=&quot;Server Version 11.0&quot;
+ /&gt;
+</code></pre><ul>
+<li>connectionTimeout：Connector接受一个连接后等待的时间(milliseconds)，默认值是60000。</li>
+<li>maxConnections：这个值表示最多可以有多少个socket连接到tomcat上  </li>
+<li>enableLookups：禁用DNS查询  </li>
+<li>acceptCount：当tomcat起动的线程数达到最大时，接受排队的请求个数，默认值为100。  </li>
+<li>maxPostSize：设置由容器解析的URL参数的最大长度，-1(小于0)为禁用这个属性，默认为2097152(2M) 请注意， FailedRequestFilter过滤器可以用来拒绝达到了极限值的请求。   </li>
+<li>maxHttpHeaderSize：http请求头信息的最大程度，超过此长度的部分不予处理。一般8K。   </li>
+<li>compression：是否启用GZIP压缩 on为启用（文本数据压缩） off为不启用， force 压缩所有数据    </li>
+<li>disableUploadTimeout：这个标志允许servlet容器使用一个不同的,通常长在数据上传连接超时。 如果不指定,这个属性被设置为true,表示禁用该时间超时。    </li>
+<li>compressionMinSize：当超过最小数据大小才进行压缩    </li>
+<li>acceptorThreadCount：用于接受连接的线程数量。增加这个值在多CPU的机器上,尽管你永远不会真正需要超过2。 也有很多非维持连接,您可能希望增加这个值。默认值是1。compressableMimeType：配置想压缩的数据类型</li>
+<li>URIEncoding：网站一般采用UTF-8作为默认编码。   </li>
+<li>processorCache：协议处理器缓存的处理器对象来提高性能。 该设置决定多少这些对象的缓存。-1意味着无限的,默认是200。 如果不使用Servlet3.0异步处理,默认是使用一样的maxThreads设置。 如果使用Servlet 3.0异步处理,默认是使用大maxThreads和预期的并发请求的最大数量(同步和异步)。  </li>
+<li>tcpNoDelay：如果设置为true,TCP_NO_DELAY选项将被设置在服务器套接字,而在大多数情况下提高性能。这是默认设置为true。     </li>
+<li>server：隐藏Tomcat版本信息，首先隐藏HTTP头中的版本信息</li>
 </ul>
-<p>一般说来，当可能阻塞的方法声明中有抛出InterruptedException则暗示该方法是可中断的，如BlockingQueue#put、BlockingQueue#take、Object#wait、Thread#sleep等，如果程序捕获到这些可中断的阻塞方法抛出的InterruptedException或检测到中断后，这些中断信息该如何处理？一般有以下两个通用原则：</p>
-<ol>
-<li>如果遇到的是可中断的阻塞方法抛出InterruptedException，可以继续向方法调用栈的上层抛出该异常，如果是检测到中断，则可清除中断状态并抛出InterruptedException，使当前方法也成为一个可中断的方法。</li>
-<li>若有时候不太方便在方法上抛出InterruptedException，比如要实现的某个接口中的方法签名上没有throws InterruptedException，这时就可以捕获可中断方法的InterruptedException并通过Thread.currentThread.interrupt()来重新设置中断状态。如果是检测并清除了中断状态，亦是如此。</li>
-</ol>
-<p>一般的代码中，尤其是作为一个基础类库时，绝不应当吞掉中断，即捕获到InterruptedException后在catch里什么也不做，清除中断状态后又不重设中断状态也不抛出InterruptedException等。因为吞掉中断状态会导致方法调用栈的上层得不到这些信息。</p>
-<p>当然，凡事总有例外的时候，当你完全清楚自己的方法会被谁调用，而调用者也不会因为中断被吞掉了而遇到麻烦，就可以这么做。</p>
-<p>总得来说，就是要让方法调用栈的上层获知中断的发生。假设你写了一个类库，类库里有个方法amethod，在amethod中检测并清除了中断状态，而没有抛出InterruptedException，作为amethod的用户来说，他并不知道里面的细节，如果用户在调用amethod后也要使用中断来做些事情，那么在调用amethod之后他将永远也检测不到中断了，因为中断信息已经被amethod清除掉了。如果作为用户，遇到这样有问题的类库，又不能修改代码，那该怎么处理？只好在自己的类里设置一个自己的中断状态，在调用interrupt方法的时候，同时设置该状态，这实在是无路可走时才使用的方法。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>java并发编程实战<br><a href="http://www.infoq.com/cn/articles/java-interrupt-mechanism" target="_blank" rel="external">详细分析java中断机制</a></p>
+<h1 id="打开GC日志"><a href="#打开GC日志" class="headerlink" title="打开GC日志"></a>打开GC日志</h1><pre><code>-Xloggc:/home/work/logs/gc-`date +%F_%H-%M-%S`.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintTenuringDistribution -XX:+PrintGCCause-XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=5M
+</code></pre><h2 id="tomcat日志配置"><a href="#tomcat日志配置" class="headerlink" title="tomcat日志配置"></a>tomcat日志配置</h2><p>tomcat catalina日志切割后，不会清除catalina.out文件的内容。</p>
+<ul>
+<li>directory - The directory where to create the log file. If the path is not absolute, it is relative to the current working directory of the application. The Apache Tomcat configuration files usually specify an absolute path for this property, ${catalina.base}/logs Default value: logs</li>
+<li>rotatable - If true, the log file will be rotated on the first write past midnight and the filename will be {prefix}{date}{suffix}, where date is yyyy-MM-dd. If false, the file will not be rotated and the filename will be {prefix}{suffix}. Default value: true</li>
+<li>prefix - The leading part of the log file name. Default value: juli.</li>
+<li>suffix - The trailing part of the log file name. Default value: .log</li>
+<li>bufferSize - Configures buffering. The value of 0 uses system default buffering (typically an 8K buffer will be used). A value of <0 forces="" a="" writer="" flush="" upon="" each="" log="" write.="" value="">0 uses a BufferedOutputStream with the defined value but note that the system default buffering will also be applied. Default value: -1</0></li>
+<li>encoding - Character set used by the log file. Default value: empty string, which means to use the system default character set.</li>
+<li>level - The level threshold for this Handler. See the java.util.logging.Level class for the possible levels. Default value: ALL</li>
+<li>filter - The java.util.logging.Filter implementation class name for this Handler. Default value: unset</li>
+<li>formatter - The java.util.logging.Formatter implementation class name for this Handler. Default value: java.util.logging.SimpleFormatter</li>
+<li>maxDays - The maximum number of days to keep the log files. If the specified value is &lt;=0 then the log files will be kept on the file system forever, otherwise they will be kept the specified maximum days. Default value: -1.</li>
+</ul>
+<pre><code>1catalina.org.apache.juli.AsyncFileHandler.level = FINE
+1catalina.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+1catalina.org.apache.juli.AsyncFileHandler.prefix = catalina.
+1catalina.org.apache.juli.AsyncFileHandler.rotatable = true
+1catalina.org.apache.juli.AsyncFileHandler.maxDays  = 7
 
+2localhost.org.apache.juli.AsyncFileHandler.level = FINE
+2localhost.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+2localhost.org.apache.juli.AsyncFileHandler.prefix = localhost.
+
+3manager.org.apache.juli.AsyncFileHandler.level = FINE
+3manager.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+3manager.org.apache.juli.AsyncFileHandler.prefix = manager.
+
+4host-manager.org.apache.juli.AsyncFileHandler.level = FINE
+4host-manager.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+4host-manager.org.apache.juli.AsyncFileHandler.prefix = host-manager.
+</code></pre>
       
     </div>
     
@@ -458,7 +453,7 @@
           
             <a href="/Tags/java/" rel="tag"># java</a>
           
-            <a href="/Tags/并发/" rel="tag"># 并发</a>
+            <a href="/Tags/配置与优化/" rel="tag"># 配置与优化</a>
           
         </div>
       
@@ -471,8 +466,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/12/spring-boot+ehcache+hibernate-seconde-level-cache/" rel="next" title="spring boot集成ehcache 2.x 用于hibernate二级缓存">
-                <i class="fa fa-chevron-left"></i> spring boot集成ehcache 2.x 用于hibernate二级缓存
+              <a href="/2017/12/02/java进程CPU占用过高排查/" rel="next" title="记一次tomcat cpu占用率过高问题的分析">
+                <i class="fa fa-chevron-left"></i> 记一次tomcat cpu占用率过高问题的分析
               </a>
             
           </div>
@@ -480,10 +475,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/02/golang-logrus日志框架/" rel="prev" title="golang logrus日志库使用小记">
-                golang logrus日志库使用小记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -635,7 +626,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#取消与关闭"><span class="nav-number">1.</span> <span class="nav-text">取消与关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#任务取消"><span class="nav-number">1.1.</span> <span class="nav-text">任务取消</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置某个“已请求取消”标志，任务定期检查该标志。"><span class="nav-number">1.1.1.</span> <span class="nav-text">设置某个“已请求取消”标志，任务定期检查该标志。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中断"><span class="nav-number">1.1.2.</span> <span class="nav-text">中断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.2.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM常用配置"><span class="nav-number">1.</span> <span class="nav-text">JVM常用配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomcat常用配置"><span class="nav-number">2.</span> <span class="nav-text">Tomcat常用配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Executor配置"><span class="nav-number">2.1.</span> <span class="nav-text">Executor配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connector设置"><span class="nav-number">2.2.</span> <span class="nav-text">Connector设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打开GC日志"><span class="nav-number">3.</span> <span class="nav-text">打开GC日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat日志配置"><span class="nav-number">3.1.</span> <span class="nav-text">tomcat日志配置</span></a></li></ol></li></ol></div>
             
 
           </div>

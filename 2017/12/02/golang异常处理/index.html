@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,并发," />
+  <meta name="keywords" content="golang,异常处理," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="取消与关闭java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。 任务取消在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。 设置某个“已请求取消”标志，任务定期检查该标志。具体实现上，一般通过一个volatile的标记 pub">
-<meta name="keywords" content="java,并发">
+<meta name="description" content="error与panicerror：可预见的错误 panic：不可预见的异常 panic处理通过panic，defer，recover来处理异常 如下示例代码，当一个http链接到来时，golang会调用serve函数，serve函数会解析http协议，然后交给上层的handler处理，如果上层的handler内抛出异常的话，会被defer里面的recover函数捕获，打印出当前的堆栈信息，这样就可">
+<meta name="keywords" content="golang,异常处理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java 多线程任务取消与关闭">
-<meta property="og:url" content="http://yoursite.com/2017/08/12/java多线程/index.html">
+<meta property="og:title" content="golang异常处理">
+<meta property="og:url" content="http://yoursite.com/2017/12/02/golang异常处理/index.html">
 <meta property="og:site_name" content="yiduyangyi">
-<meta property="og:description" content="取消与关闭java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。 任务取消在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。 设置某个“已请求取消”标志，任务定期检查该标志。具体实现上，一般通过一个volatile的标记 pub">
+<meta property="og:description" content="error与panicerror：可预见的错误 panic：不可预见的异常 panic处理通过panic，defer，recover来处理异常 如下示例代码，当一个http链接到来时，golang会调用serve函数，serve函数会解析http协议，然后交给上层的handler处理，如果上层的handler内抛出异常的话，会被defer里面的recover函数捕获，打印出当前的堆栈信息，这样就可">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-02T07:11:47.916Z">
+<meta property="og:updated_time" content="2017-12-02T07:26:58.986Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java 多线程任务取消与关闭">
-<meta name="twitter:description" content="取消与关闭java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。 任务取消在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。 设置某个“已请求取消”标志，任务定期检查该标志。具体实现上，一般通过一个volatile的标记 pub">
+<meta name="twitter:title" content="golang异常处理">
+<meta name="twitter:description" content="error与panicerror：可预见的错误 panic：不可预见的异常 panic处理通过panic，defer，recover来处理异常 如下示例代码，当一个http链接到来时，golang会调用serve函数，serve函数会解析http协议，然后交给上层的handler处理，如果上层的handler内抛出异常的话，会被defer里面的recover函数捕获，打印出当前的堆栈信息，这样就可">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/12/java多线程/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/02/golang异常处理/"/>
 
 
 
 
 
-  <title>java 多线程任务取消与关闭 | yiduyangyi</title>
+  <title>golang异常处理 | yiduyangyi</title>
   
 
 
@@ -243,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/java多线程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/02/golang异常处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yangjinfeng">
@@ -260,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">java 多线程任务取消与关闭</h1>
+          <h1 class="post-title" itemprop="name headline">golang异常处理</h1>
         
 
         <div class="post-meta">
@@ -272,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T09:33:40+08:00">
-                2017-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-02T14:56:10+08:00">
+                2017-12-02
               </time>
             
 
@@ -295,8 +295,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
                   </a>
                 </span>
 
@@ -306,8 +306,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">java并发编程</span>
+                  <a href="/categories/golang/异常/" itemprop="url" rel="index">
+                    <span itemprop="name">异常</span>
                   </a>
                 </span>
 
@@ -343,102 +343,138 @@
       
 
       
-        <h1 id="取消与关闭"><a href="#取消与关闭" class="headerlink" title="取消与关闭"></a>取消与关闭</h1><p>java并未提供任何机制来安全的终止线程。但它提供了中断，这是一种协作机制，能够使一个线程终止另外一个线程的当前工作。</p>
-<h2 id="任务取消"><a href="#任务取消" class="headerlink" title="任务取消"></a>任务取消</h2><p>在java中没有一种安全的抢占式方法来停止线程，因此也就没有一种安全的抢占式方法来停止任务。只有一些协作的机制，使请求取消的任务和代码都遵循一种协商好的协议。</p>
-<h3 id="设置某个“已请求取消”标志，任务定期检查该标志。"><a href="#设置某个“已请求取消”标志，任务定期检查该标志。" class="headerlink" title="设置某个“已请求取消”标志，任务定期检查该标志。"></a>设置某个“已请求取消”标志，任务定期检查该标志。</h3><p>具体实现上，一般通过一个volatile的标记</p>
-<pre><code>public class Task implement Runnable {
-
-    private volatile boolean cancelled;
-
-    public void run() {
-        while(!cancelled) {
-
+        <h1 id="error与panic"><a href="#error与panic" class="headerlink" title="error与panic"></a>error与panic</h1><p>error：可预见的错误</p>
+<p>panic：不可预见的异常</p>
+<h1 id="panic处理"><a href="#panic处理" class="headerlink" title="panic处理"></a>panic处理</h1><p>通过panic，defer，recover来处理异常</p>
+<p>如下示例代码，当一个http链接到来时，golang会调用serve函数，serve函数会解析http协议，然后交给上层的handler处理，如果上层的handler内抛出异常的话，会被defer里面的recover函数捕获，打印出当前的堆栈信息，这样就可以防止一个http请求发生异常导致整个程序崩溃了。</p>
+<pre><code>func (c *conn)serve() {
+    defer func() {
+        if err := recover(); err != nil {
+            const size = 64 &lt;&lt; 10
+            buf := make([]byte, size)
+            buf = buf[:runtime.Stack(buf, false)]
+            fmt.Printlf(&quot;http: panic serving %v: %v\n%s&quot;, c.remoteAddr, err, buf)
+        }
+    }()
+    w := c.readRequest()
+    ServeHTTP(w, w.req)
+}
+</code></pre><h1 id="error处理"><a href="#error处理" class="headerlink" title="error处理"></a>error处理</h1><h2 id="在defer中集中处理错误"><a href="#在defer中集中处理错误" class="headerlink" title="在defer中集中处理错误"></a>在defer中集中处理错误</h2><pre><code>func demo() {
+    var err error
+    defer func() {
+        if err != nil {
+            //  处理发生的错误，打印日志等信息
+            return
         }
     }
-
-    public void cancel() {
-        cancelled = true;
+    err = func1()
+    if err != nil {
+        return
     }
-
+    err = func2()
+    if err != nil {
+        return
+    }
+    .....
 }
-</code></pre><p>这种方案有一个缺陷，如果任务调用了一个阻塞方法，比如BlockingQueue.put, 那么，任务可能永远不会去检查取消标志，也就永远不会结束。</p>
-<pre><code>public class BrokenPrimeProducer extends Thread {
-    private final BlockingQueue&lt;BigInteger&gt; queue;
-    private volatile boolean cancelled = false;
-
-    BrokenPrimeProducer(BlockingQueue&lt;BigInteger&gt; queue) {
-        this.queue = queue;
-    }
-
-    public void run() {
-        try {
-            BigInteger p = BigInteger.ONE;
-            while (!cancelled) {
-                queue.put(p = p.nextProbablePrime());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void cancel() {
-        cancelled = true;
-    }
+</code></pre><h2 id="all-or-nothing-check"><a href="#all-or-nothing-check" class="headerlink" title="all-or-nothing check"></a>all-or-nothing check</h2><p>如果一个完整的任务内有多个小的任务，我们没有必要执行完每个小的任务都检查下是否有错，我们可以在所有的小任务执行完成后再去判断整个任务的执行过程中有没有错误。</p>
+<pre><code>//冗长的代码，满篇重复的 if err != nil
+_, err = fd.Write(p0[a:b])
+if err != nil {
+    return err
 }
-</code></pre><h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>java的一些特殊的阻塞库的方法支持中断。线程中断是一种协作机制，可用来终止线程。</p>
-<p>每个线程都有一个boolean的中断状态。中断线程时，该状态将会被设置为true，Thread类中，</p>
-<pre><code>public class Thread {
-    // 中断目标线程
-    public void interrupt() {}
-
-    // 清除当前线程的中断状态
-    public static boolean interrupted() {}
-
-    // 返回目标线程的中断状态
-    public boolean isInterrupted() {}
+_, err = fd.Write(p1[c:d])
+if err != nil {
+    return err
 }
-</code></pre><p>阻塞库的方法，如Thread.sleep和Object.wait等都会检查线程何时中断，并且在发生中断时返回。响应中断执行的操作包括：清除中断状态，抛出InterruptedException。JVM不保证阻塞方法检测到中断的速度，但通常响应速度还是非常快的。</p>
-<p>注意：调用interrupt并不意味着立即停止目标线程正在进行的工作，而只是传递了请求中断的消息。</p>
-<p>前面例子中的问题如果用中断来解决如下，使用中断而不是boolean标志来取消即可。</p>
-<pre><code>public class BrokenPrimeProducer extends Thread {
-    private final BlockingQueue&lt;BigInteger&gt; queue;
-
-    BrokenPrimeProducer(BlockingQueue&lt;BigInteger&gt; queue) {
-        this.queue = queue;
-    }
-
-    public void run() {
-        try {
-            BigInteger p = BigInteger.ONE;
-            while (!Thread.currentThread().isInterrupted()) {
-                queue.put(p = p.nextProbablePrime());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void cancel() {
-        interrupt();
-    }
+_, err = fd.Write(p2[e:f])
+if err != nil {
+    return err
 }
-</code></pre><p><strong>一般而言，中断是实现取消的最合理的方式。</strong></p>
-<ul>
-<li>处理时机</li>
-</ul>
-<p>显然，作为一种协作机制，不会强求被中断线程一定要在某个点进行处理。实际上，被中断线程只需在合适的时候处理即可，如果没有合适的时间点，甚至可以不处理，这时候在任务处理层面，就跟没有调用中断方法一样。“合适的时候”与线程正在处理的业务逻辑紧密相关，例如，每次迭代的时候，进入一个可能阻塞且无法中断的方法之前等，但多半不会出现在某个临界区更新另一个对象状态的时候，因为这可能会导致对象处于不一致状态。</p>
-<ul>
-<li>处理方式</li>
-</ul>
-<p>一般说来，当可能阻塞的方法声明中有抛出InterruptedException则暗示该方法是可中断的，如BlockingQueue#put、BlockingQueue#take、Object#wait、Thread#sleep等，如果程序捕获到这些可中断的阻塞方法抛出的InterruptedException或检测到中断后，这些中断信息该如何处理？一般有以下两个通用原则：</p>
-<ol>
-<li>如果遇到的是可中断的阻塞方法抛出InterruptedException，可以继续向方法调用栈的上层抛出该异常，如果是检测到中断，则可清除中断状态并抛出InterruptedException，使当前方法也成为一个可中断的方法。</li>
-<li>若有时候不太方便在方法上抛出InterruptedException，比如要实现的某个接口中的方法签名上没有throws InterruptedException，这时就可以捕获可中断方法的InterruptedException并通过Thread.currentThread.interrupt()来重新设置中断状态。如果是检测并清除了中断状态，亦是如此。</li>
-</ol>
-<p>一般的代码中，尤其是作为一个基础类库时，绝不应当吞掉中断，即捕获到InterruptedException后在catch里什么也不做，清除中断状态后又不重设中断状态也不抛出InterruptedException等。因为吞掉中断状态会导致方法调用栈的上层得不到这些信息。</p>
-<p>当然，凡事总有例外的时候，当你完全清楚自己的方法会被谁调用，而调用者也不会因为中断被吞掉了而遇到麻烦，就可以这么做。</p>
-<p>总得来说，就是要让方法调用栈的上层获知中断的发生。假设你写了一个类库，类库里有个方法amethod，在amethod中检测并清除了中断状态，而没有抛出InterruptedException，作为amethod的用户来说，他并不知道里面的细节，如果用户在调用amethod后也要使用中断来做些事情，那么在调用amethod之后他将永远也检测不到中断了，因为中断信息已经被amethod清除掉了。如果作为用户，遇到这样有问题的类库，又不能修改代码，那该怎么处理？只好在自己的类里设置一个自己的中断状态，在调用interrupt方法的时候，同时设置该状态，这实在是无路可走时才使用的方法。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>java并发编程实战<br><a href="http://www.infoq.com/cn/articles/java-interrupt-mechanism" target="_blank" rel="external">详细分析java中断机制</a></p>
+// and so on
+</code></pre><p>我们可以这样简化代码</p>
+<pre><code>type errWriter struct {
+    w   io.Writer
+    err error
+}
+func (ew *errWriter) write(buf []byte) {
+    if ew.err != nil {
+        return
+    }
+    _, ew.err = ew.w.Write(buf)
+}
+ew := &amp;errWriter{w: fd}
+ew.write(p0[a:b])
+ew.write(p1[c:d])
+ew.write(p2[e:f])
+// 只需要在最后检查一次
+if ew.err != nil {
+    return ew.err
+}
+</code></pre><p>这种处理方式有一个明显的问题是不知道整个任务是在哪一个小的任务执行的时候发生错误，如果我们需要关注每个小任务的进度则这种方式就不适合了。</p>
+<h2 id="错误上下文"><a href="#错误上下文" class="headerlink" title="错误上下文"></a>错误上下文</h2><p>error是一个接口，任何实现了Error()函数的类型都满足该接口，errors.New()实际上返回的是一个errorString类型，该类型内仅包含一个string字符串，没有错误发生的上下文信息，当我们把error不断向上抛，在上层做统一处理时，只能输出一个字符串信息而不知道错误是在什么地方什么情况下发生的。</p>
+<pre><code>type error interface {
+    Error() string
+}
+type errorString struct {
+    s string
+}
+func (e *errorString) Error() string {
+    return e.s
+}
+func New(text string) error {
+    return &amp;errorString{text}
+}
+</code></pre><p>既然error是一个接口，那我们也可以自己实现一个满足该接口的类型，并记录下发生错误的文件，函数，堆栈等信息，更方便错误的查找。</p>
+<pre><code>package stackerr
+import (
+    &quot;fmt&quot;
+    &quot;runtime&quot;
+    &quot;strings&quot;
+)
+type StackErr struct {
+    Filename      string
+    CallingMethod string
+    Line          int
+    ErrorMessage  string
+    StackTrace    string
+}
+func New(err interface{}) *StackErr {
+    var errMessage string
+    switch t := err.(type) {
+    case *StackErr:
+        return t
+    case string:
+        errMessage = t
+    case error:
+        errMessage = t.Error()
+    default:
+        errMessage = fmt.Sprintf(&quot;%v&quot;, t)
+    }
+    stackErr := &amp;StackErr{}
+    stackErr.ErrorMessage = errMessage
+    _, file, line, ok := runtime.Caller(1)
+    if ok {
+        stackErr.Line = line
+        components := strings.Split(file, &quot;/&quot;)
+        stackErr.Filename = components[(len(components) - 1)]
+    }
+    const size = 1 &lt;&lt; 12
+    buf := make([]byte, size)
+    n := runtime.Stack(buf, false)
+    stackErr.StackTrace = string(buf[:n])
+    return stackErr
+}
+func (this *StackErr) Error() string {
+    return this.ErrorMessage
+}
+func (this *StackErr) Stack() string {
+    return fmt.Sprintf(&quot;{%s:%d} %s\nStack Info:\n %s&quot;, this.Filename, this.Line, this.ErrorMessage, this.StackTrace)
+}
+func (this *StackErr) Detail() string {
+    return fmt.Sprintf(&quot;{%s:%d} %s&quot;, this.Filename, this.Line, this.ErrorMessage)
+}
+</code></pre><h2 id="第三方错误库推荐"><a href="#第三方错误库推荐" class="headerlink" title="第三方错误库推荐"></a>第三方错误库推荐</h2><p><a href="https://github.com/pkg/errors" target="_blank" rel="external">github.com/pkg/errors</a>是一款提供了日志上下文封装的error库，可以非常方便的给error加上额外的信息、记录stack信息等等。详细使用说明可以参考github或者源码。</p>
 
       
     </div>
@@ -456,9 +492,9 @@
       
         <div class="post-tags">
           
-            <a href="/Tags/java/" rel="tag"># java</a>
+            <a href="/Tags/golang/" rel="tag"># golang</a>
           
-            <a href="/Tags/并发/" rel="tag"># 并发</a>
+            <a href="/Tags/异常处理/" rel="tag"># 异常处理</a>
           
         </div>
       
@@ -471,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/12/spring-boot+ehcache+hibernate-seconde-level-cache/" rel="next" title="spring boot集成ehcache 2.x 用于hibernate二级缓存">
-                <i class="fa fa-chevron-left"></i> spring boot集成ehcache 2.x 用于hibernate二级缓存
+              <a href="/2017/12/02/golang-logrus日志框架/" rel="next" title="golang logrus日志库使用小记">
+                <i class="fa fa-chevron-left"></i> golang logrus日志库使用小记
               </a>
             
           </div>
@@ -481,8 +517,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/02/golang-logrus日志框架/" rel="prev" title="golang logrus日志库使用小记">
-                golang logrus日志库使用小记 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/02/java8/" rel="prev" title="java 8新特性小记">
+                java 8新特性小记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -635,7 +671,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#取消与关闭"><span class="nav-number">1.</span> <span class="nav-text">取消与关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#任务取消"><span class="nav-number">1.1.</span> <span class="nav-text">任务取消</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置某个“已请求取消”标志，任务定期检查该标志。"><span class="nav-number">1.1.1.</span> <span class="nav-text">设置某个“已请求取消”标志，任务定期检查该标志。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中断"><span class="nav-number">1.1.2.</span> <span class="nav-text">中断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.2.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#error与panic"><span class="nav-number">1.</span> <span class="nav-text">error与panic</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#panic处理"><span class="nav-number">2.</span> <span class="nav-text">panic处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#error处理"><span class="nav-number">3.</span> <span class="nav-text">error处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在defer中集中处理错误"><span class="nav-number">3.1.</span> <span class="nav-text">在defer中集中处理错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#all-or-nothing-check"><span class="nav-number">3.2.</span> <span class="nav-text">all-or-nothing check</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误上下文"><span class="nav-number">3.3.</span> <span class="nav-text">错误上下文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三方错误库推荐"><span class="nav-number">3.4.</span> <span class="nav-text">第三方错误库推荐</span></a></li></ol></li></ol></div>
             
 
           </div>
