@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,hyper,kubernetes," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="从chroot，control groups，lxc，warden，一路走到如今的docker、rocket、windows container、hyper，容器技术才算是真正的走向了大规模应用。详细的容器技术发展历史可以参考下面这篇文章  容器技术发展历史  本文主要从宏观的角度，梳理Docker与hyper这两种container runtime及其相关生态的一个关系，帮助感兴趣的人建立一个整">
+<meta name="keywords" content="docker,hyper,kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器技术生态概览">
+<meta property="og:url" content="http://yoursite.com/2017/12/27/容器生态概览/index.html">
+<meta property="og:site_name" content="yiduyangyi">
+<meta property="og:description" content="从chroot，control groups，lxc，warden，一路走到如今的docker、rocket、windows container、hyper，容器技术才算是真正的走向了大规模应用。详细的容器技术发展历史可以参考下面这篇文章  容器技术发展历史  本文主要从宏观的角度，梳理Docker与hyper这两种container runtime及其相关生态的一个关系，帮助感兴趣的人建立一个整">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/engine-components-flow.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/containerd.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/containerd-layer-architecture.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/docker-architecture.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/docker-binary.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/cri.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/cri-containerd.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/cri-containerd-architecture.png">
+<meta property="og:image" content="http://yoursite.com/2017/12/27/容器生态概览/hyper.png">
+<meta property="og:updated_time" content="2017-12-27T15:05:39.426Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="容器技术生态概览">
+<meta name="twitter:description" content="从chroot，control groups，lxc，warden，一路走到如今的docker、rocket、windows container、hyper，容器技术才算是真正的走向了大规模应用。详细的容器技术发展历史可以参考下面这篇文章  容器技术发展历史  本文主要从宏观的角度，梳理Docker与hyper这两种container runtime及其相关生态的一个关系，帮助感兴趣的人建立一个整">
+<meta name="twitter:image" content="http://yoursite.com/2017/12/27/容器生态概览/engine-components-flow.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/27/容器生态概览/"/>
+
+
+
+
+
+  <title>容器技术生态概览 | yiduyangyi</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yiduyangyi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术与生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/27/容器生态概览/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangjinfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/img/icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yiduyangyi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">容器技术生态概览</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T21:12:56+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/container/" itemprop="url" rel="index">
+                    <span itemprop="name">container</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>从chroot，control groups，lxc，warden，一路走到如今的docker、rocket、windows container、hyper，容器技术才算是真正的走向了大规模应用。详细的容器技术发展历史可以参考下面这篇文章</p>
+<blockquote>
+<p><a href="https://dzone.com/articles/evolution-of-linux-containers-future" target="_blank" rel="external">容器技术发展历史</a></p>
+</blockquote>
+<p>本文主要从宏观的角度，梳理Docker与hyper这两种container runtime及其相关生态的一个关系，帮助感兴趣的人建立一个整体的印象。</p>
+<h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><p>Docker一路走来，从独立发展到参与开放容器规范的建设，自身架构也在不断调整与完善，逐渐走向了更加规范和生态化的道路。宏观上看，Docker Engine是一种client/server架构，server端，也即是daemon,由一个后台常驻进程dockerd构成。对外提供REST API，整体架构如下图所示。<br><img src="/2017/12/27/容器生态概览/engine-components-flow.png" alt=""></p>
+<p>自1.11版本起，Docker全面调整模块架构，成为了第一个符合OCI规范的容器运行时。具体来说，Docker Engine目前是基于containerd和runc构建的。下面详细介绍相关OCI规范、runC、containerd。</p>
+<h2 id="什么是OCI规范"><a href="#什么是OCI规范" class="headerlink" title="什么是OCI规范"></a>什么是OCI规范</h2><p>OCI(Open Container Initiative)致力于建立一个容器运行时和镜像格式的规范，其核心目的在于避免容器生态的分化，确保在不同容器引擎上构建的容器可以相互兼容。这是容器可移植性的根本保证。虽然Docker目前是容器的事实规范，但随着时间的推移，会不断涌现一些其他的容器引擎，这个时候就很有必要来定义一下“什么是一个容器”，保证不同的实现遵循一些共同的东西。这既是OCI期望做的事情。</p>
+<ul>
+<li>runtime spec</li>
+</ul>
+<p>OCI Runtime Specification，主要定义如何container配置、执行环境以及container生命周期。</p>
+<ul>
+<li>image spec</li>
+</ul>
+<p>OCI Image Format Specification，主要定义一个OCI image由一个manifest, 一个image index (optional), 一组filesystem layers, 以及一个configuration组成。该规范的目的在于确保能构建一套不同容器引擎间可互操作的工具，用于镜像的构建、传输，以及镜像运行准备工作。</p>
+<p>有关OCI详细资料，可参考其<a href="https://www.opencontainers.org/" target="_blank" rel="external">官方网站</a></p>
+<h2 id="什么是runC"><a href="#什么是runC" class="headerlink" title="什么是runC"></a>什么是runC</h2><p>在早期的Docker Engine中，主要用LXC工具来运行和管理容器；后来采用自研的libcontainer来做这类事情，libcontainer直接使用Linux内核提供的相关隔离技术，比如cgroups、namespace等等。</p>
+<p>runC是一个轻量级的工具，做且只做一件事情，那就是运行一个容器。由libcontainer演变而来，并且由Docker捐献给Linux基金会，作为OCI的参考实现。</p>
+<p>有关runC详细资料，可参考其<a href="https://github.com/opencontainers/runc" target="_blank" rel="external">github repo</a></p>
+<h2 id="什么是containerd"><a href="#什么是containerd" class="headerlink" title="什么是containerd"></a>什么是containerd</h2><p>2016年12月14日，Docker公司宣布将containerd从Docker Engine中分离，并捐赠到一个新的开源社区独立发展和运营，”一个工业标准的容器运行时，注重简单、 健壮性、可移植性”。containerd可以作为daemon程序运行在Linux和Windows上，管理机器上所有容器的生命周期。</p>
+<p>Docker 1.11的Docker Engine里就包含了containerd，而现在则是把containerd从Docker Engine里彻底剥离出来，作为一个独立的开源项目独立发展，目标是提供一个更加开放、稳定的容器运行基础设施。和原先包含在Docker Engine里containerd相比，独立的containerd将具有更多的功能，可以涵盖整个容器运行时管理的所有需求。</p>
+<p>containerd并不是直接面向最终用户的，而是主要用于集成到更上层的系统里，比如Swarm, Kubernetes, Mesos等容器编排系统。containerd以Daemon的形式运行在系统上，通过unix domain docket暴露很低层的gRPC API，上层系统可以通过这些API管理机器上的容器。每个containerd只负责一台机器，Pull镜像，对容器的操作（启动、停止等），网络，存储都是由containerd完成。具体运行容器由runC负责，实际上只要是符合OCI规范的容器都可以支持。</p>
+<ul>
+<li>整体架构</li>
+</ul>
+<p><img src="/2017/12/27/容器生态概览/containerd.png" alt=""></p>
+<ul>
+<li>模块分层</li>
+</ul>
+<p><img src="/2017/12/27/容器生态概览/containerd-layer-architecture.png" alt=""></p>
+<p>有关详细信息可参考<a href="https://containerd.io/" target="_blank" rel="external">官网</a>和<a href="https://github.com/containerd/containerd" target="_blank" rel="external">github项目主页</a></p>
+<h2 id="Docker如何组合上述组件"><a href="#Docker如何组合上述组件" class="headerlink" title="Docker如何组合上述组件"></a>Docker如何组合上述组件</h2><p><img src="/2017/12/27/容器生态概览/docker-architecture.png" alt=""></p>
+<p>先看上面这张图，docker目前被分成了4个独立部分，engine管理镜像，通过containerd，containerd调用containerd-shim，containerd-shim调用runc启动容器。containerd只与容器打交道。图中列出的每个组件，都有一个独立的二进制可执行文件与之对应，如下所示<br><img src="/2017/12/27/容器生态概览/docker-binary.png" alt=""></p>
+<h1 id="Kubernetes-on-Docker"><a href="#Kubernetes-on-Docker" class="headerlink" title="Kubernetes on Docker"></a>Kubernetes on Docker</h1><p>基本的容器runtime还远远不能满足大规模应用的需求，典型的诉求就是容器的编排管理系统，Docker公司自身的swarm，google的kubernetes，以及mesos marathon就是这类编排系统。经过这几年的发展，kubernetes大有一统江湖的趋势，kubernetes本身与docker的结合方式也在不断的变化，自身的定位也逐渐在往通用性容器编排调度系统发展，所以k8s一直在探索如何兼容更多的container runtime，CRI就是在这种背景下诞生的。</p>
+<h2 id="CRI"><a href="#CRI" class="headerlink" title="CRI"></a>CRI</h2><p>从1.5版本开始，kubernetes引入了CRI(Container Runtime Interface)，可参考<a href="http://blog.kubernetes.io/2016/12/container-runtime-interface-cri-in-kubernetes.html" target="_blank" rel="external">Introducing Container Runtime Interface (CRI) in Kubernetes</a>，其核心目的在于通过一种标准的方式来集成各种不同容器runtime。并且是一种可插拔的架构，可以在不改变kubernetes的前提下，使用不同的container runtime。在CRI之前，不同的container runtime（docker/rkt等）集成到kubelet是通过在kubelet中实现一个高层接口来完成的，之前叫做OCID，CRI-O则是完全聚焦与OCI兼容的container runtime和container images。</p>
+<p><img src="/2017/12/27/容器生态概览/cri.png" alt=""></p>
+<h2 id="CRI-containerd"><a href="#CRI-containerd" class="headerlink" title="CRI-containerd"></a>CRI-containerd</h2><p>CRI-containerd则是基于containerd的CRI实现，目前是kubernetes的一个孵化项目，kubernetes 1.8中已进入beta版本。主要用于替代前期基于dockerd的CRI实现。</p>
+<ul>
+<li><p>kubelet从dockershim向cri-containerd迁移<br><img src="/2017/12/27/容器生态概览/cri-containerd.png" alt=""></p>
+</li>
+<li><p>CRI-containerd架构<br><img src="/2017/12/27/容器生态概览/cri-containerd-architecture.png" alt=""></p>
+</li>
+</ul>
+<p>所以在这种新型架构下，kubelet直接通过基于containerd的CRI实现(CRI-containerd)与docker-containerd交互，以实现container的管理。</p>
+<h1 id="hyper-container"><a href="#hyper-container" class="headerlink" title="hyper container"></a>hyper container</h1><p>鉴于docker是共享宿主机的内核，所以在安全性方面有天然的弱势。传统的虚拟机则属于内核相互隔离的。那么能否结合二者的优点呢，答案就是hyper container。</p>
+<p>hyper container主要有4部分构成，hyperctl客户端，hyperd，hyperkernel，hyperStart。整体架构如下图所示<br><img src="/2017/12/27/容器生态概览/hyper.png" alt=""></p>
+<p>hyper container直接使用OCI镜像规范，hyper的runtime是基于hypervisor的<a href="https://github.com/hyperhq/runv" target="_blank" rel="external">runV</a>，兼容OCI runtime规范，但是由于hypervisor和container的天然区别，OCI中有部分规范在hyper里是没有的，详情可参见github项目主页。</p>
+<p>类似hyper的还有intel开源的<a href="https://github.com/clearcontainers" target="_blank" rel="external">clearcontainers</a></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>容器生态正在走向规范化，结和虚拟机和container二者优势的hyper正在快速发展，编排系统kubernetes正在稳步成熟，周边生态也在不断完善，CNCF家庭成员也在不断壮大，微服务理念也逐步深入人心，service mesh技术正在高速发展…一切值得期待</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/Tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/Tags/hyper/" rel="tag"># hyper</a>
+          
+            <a href="/Tags/kubernetes/" rel="tag"># kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/27/tomcat常用配置/" rel="next" title="tomcat与jvm常用配置">
+                <i class="fa fa-chevron-left"></i> tomcat与jvm常用配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/assets/img/icon.jpg"
+                alt="yangjinfeng" />
+            
+              <p class="site-author-name" itemprop="name">yangjinfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yiduyangyi" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yangjinfeng21@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker"><span class="nav-number">1.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是OCI规范"><span class="nav-number">1.1.</span> <span class="nav-text">什么是OCI规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是runC"><span class="nav-number">1.2.</span> <span class="nav-text">什么是runC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是containerd"><span class="nav-number">1.3.</span> <span class="nav-text">什么是containerd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker如何组合上述组件"><span class="nav-number">1.4.</span> <span class="nav-text">Docker如何组合上述组件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes-on-Docker"><span class="nav-number">2.</span> <span class="nav-text">Kubernetes on Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CRI"><span class="nav-number">2.1.</span> <span class="nav-text">CRI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRI-containerd"><span class="nav-number">2.2.</span> <span class="nav-text">CRI-containerd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hyper-container"><span class="nav-number">3.</span> <span class="nav-text">hyper container</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangjinfeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

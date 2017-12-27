@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,配置与优化," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="JVM常用配置jdk1.8完整配置 -XX:MaxHeapSize=size -XX:MaxHeapFreeRatio=percent -XX:MaxMetaspaceSize=size -XX:MaxNewSize=size -XX:NewRatio=ratio Tomcat常用配置Executor配置历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过元素">
+<meta name="keywords" content="java,配置与优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tomcat与jvm常用配置">
+<meta property="og:url" content="http://yoursite.com/2017/12/27/tomcat常用配置/index.html">
+<meta property="og:site_name" content="yiduyangyi">
+<meta property="og:description" content="JVM常用配置jdk1.8完整配置 -XX:MaxHeapSize=size -XX:MaxHeapFreeRatio=percent -XX:MaxMetaspaceSize=size -XX:MaxNewSize=size -XX:NewRatio=ratio Tomcat常用配置Executor配置历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过元素">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-02T07:16:58.784Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tomcat与jvm常用配置">
+<meta name="twitter:description" content="JVM常用配置jdk1.8完整配置 -XX:MaxHeapSize=size -XX:MaxHeapFreeRatio=percent -XX:MaxMetaspaceSize=size -XX:MaxNewSize=size -XX:NewRatio=ratio Tomcat常用配置Executor配置历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过元素">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/27/tomcat常用配置/"/>
+
+
+
+
+
+  <title>tomcat与jvm常用配置 | yiduyangyi</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yiduyangyi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">技术与生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/27/tomcat常用配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangjinfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/img/icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yiduyangyi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">tomcat与jvm常用配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T21:12:56+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/配置与优化/" itemprop="url" rel="index">
+                    <span itemprop="name">配置与优化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="JVM常用配置"><a href="#JVM常用配置" class="headerlink" title="JVM常用配置"></a>JVM常用配置</h1><p><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" title="官方文档" target="_blank" rel="external">jdk1.8完整配置</a></p>
+<pre><code>-XX:MaxHeapSize=size
+-XX:MaxHeapFreeRatio=percent
+-XX:MaxMetaspaceSize=size
+-XX:MaxNewSize=size
+-XX:NewRatio=ratio
+</code></pre><h1 id="Tomcat常用配置"><a href="#Tomcat常用配置" class="headerlink" title="Tomcat常用配置"></a>Tomcat常用配置</h1><h2 id="Executor配置"><a href="#Executor配置" class="headerlink" title="Executor配置"></a>Executor配置</h2><p>历史版本中，tomcat每个Connector会有一个独立的thread pool。但通过<executor>元素，则可以为不同Connector，甚至不同组件，配置共享thread pool。</executor></p>
+<pre><code>&lt;Executor
+     name=&quot;tomcatThreadPool&quot;
+     namePrefix=&quot;catalina-exec-&quot;
+     maxThreads=&quot;500&quot;
+     minSpareThreads=&quot;30&quot;
+     maxIdleTime=&quot;60000&quot;
+     prestartminSpareThreads = &quot;true&quot;
+     maxQueueSize = &quot;100&quot;
+/&gt;
+</code></pre><ul>
+<li>maxThreads：最大并发线程数。默认200，一般设置500~800，根据硬件配置调整  </li>
+<li>minSpareThreads：tomcat初始化时创建的线程数   </li>
+<li>maxIdleTime：如果当前线程大于初始化线程，空闲线程存活的时间，单位毫秒   </li>
+<li>prestartminSpareThreads：在Tomcat初始化的时候就初始化minSpareThreads的参数值，如果不等于true，minSpareThreads的值就没啥效果了    </li>
+<li>maxQueueSize：最大的等待队列数，超过则拒绝请求    </li>
+</ul>
+<h2 id="Connector设置"><a href="#Connector设置" class="headerlink" title="Connector设置"></a>Connector设置</h2><pre><code>&lt;Connector
+ executor=&quot;tomcatThreadPool&quot;
+ port=&quot;8080&quot;
+ protocol=&quot;org.apache.coyote.http11.Http11Nio2Protocol&quot;
+ connectionTimeout=&quot;60000&quot;
+ maxConnections=&quot;10000&quot;
+ redirectPort=&quot;8443&quot;
+ enableLookups=&quot;false&quot;
+ acceptCount=&quot;100&quot;
+ maxPostSize=&quot;10485760&quot;
+ maxHttpHeaderSize=&quot;8192&quot;
+ compression=&quot;on&quot;
+ disableUploadTimeout=&quot;true&quot;
+ compressionMinSize=&quot;2048&quot;
+ acceptorThreadCount=&quot;2&quot;
+ compressableMimeType=&quot;text/html,text/plain,text/css,application/javascript,application/json,application/x-font-ttf,application/x-font-otf,image/svg+xml,image/jpeg,image/png,image/gif,audio/mpeg,video/mp4&quot;
+ URIEncoding=&quot;utf-8&quot;
+ processorCache=&quot;20000&quot;
+ tcpNoDelay=&quot;true&quot;
+ server=&quot;Server Version 11.0&quot;
+ /&gt;
+</code></pre><ul>
+<li>connectionTimeout：Connector接受一个连接后等待的时间(milliseconds)，默认值是60000。</li>
+<li>maxConnections：这个值表示最多可以有多少个socket连接到tomcat上  </li>
+<li>enableLookups：禁用DNS查询  </li>
+<li>acceptCount：当tomcat起动的线程数达到最大时，接受排队的请求个数，默认值为100。  </li>
+<li>maxPostSize：设置由容器解析的URL参数的最大长度，-1(小于0)为禁用这个属性，默认为2097152(2M) 请注意， FailedRequestFilter过滤器可以用来拒绝达到了极限值的请求。   </li>
+<li>maxHttpHeaderSize：http请求头信息的最大程度，超过此长度的部分不予处理。一般8K。   </li>
+<li>compression：是否启用GZIP压缩 on为启用（文本数据压缩） off为不启用， force 压缩所有数据    </li>
+<li>disableUploadTimeout：这个标志允许servlet容器使用一个不同的,通常长在数据上传连接超时。 如果不指定,这个属性被设置为true,表示禁用该时间超时。    </li>
+<li>compressionMinSize：当超过最小数据大小才进行压缩    </li>
+<li>acceptorThreadCount：用于接受连接的线程数量。增加这个值在多CPU的机器上,尽管你永远不会真正需要超过2。 也有很多非维持连接,您可能希望增加这个值。默认值是1。compressableMimeType：配置想压缩的数据类型</li>
+<li>URIEncoding：网站一般采用UTF-8作为默认编码。   </li>
+<li>processorCache：协议处理器缓存的处理器对象来提高性能。 该设置决定多少这些对象的缓存。-1意味着无限的,默认是200。 如果不使用Servlet3.0异步处理,默认是使用一样的maxThreads设置。 如果使用Servlet 3.0异步处理,默认是使用大maxThreads和预期的并发请求的最大数量(同步和异步)。  </li>
+<li>tcpNoDelay：如果设置为true,TCP_NO_DELAY选项将被设置在服务器套接字,而在大多数情况下提高性能。这是默认设置为true。     </li>
+<li>server：隐藏Tomcat版本信息，首先隐藏HTTP头中的版本信息</li>
+</ul>
+<h1 id="打开GC日志"><a href="#打开GC日志" class="headerlink" title="打开GC日志"></a>打开GC日志</h1><pre><code>-Xloggc:/home/work/logs/gc-`date +%F_%H-%M-%S`.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintTenuringDistribution -XX:+PrintGCCause-XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=5M
+</code></pre><h2 id="tomcat日志配置"><a href="#tomcat日志配置" class="headerlink" title="tomcat日志配置"></a>tomcat日志配置</h2><p>tomcat catalina日志切割后，不会清除catalina.out文件的内容。</p>
+<ul>
+<li>directory - The directory where to create the log file. If the path is not absolute, it is relative to the current working directory of the application. The Apache Tomcat configuration files usually specify an absolute path for this property, ${catalina.base}/logs Default value: logs</li>
+<li>rotatable - If true, the log file will be rotated on the first write past midnight and the filename will be {prefix}{date}{suffix}, where date is yyyy-MM-dd. If false, the file will not be rotated and the filename will be {prefix}{suffix}. Default value: true</li>
+<li>prefix - The leading part of the log file name. Default value: juli.</li>
+<li>suffix - The trailing part of the log file name. Default value: .log</li>
+<li>bufferSize - Configures buffering. The value of 0 uses system default buffering (typically an 8K buffer will be used). A value of <0 forces="" a="" writer="" flush="" upon="" each="" log="" write.="" value="">0 uses a BufferedOutputStream with the defined value but note that the system default buffering will also be applied. Default value: -1</0></li>
+<li>encoding - Character set used by the log file. Default value: empty string, which means to use the system default character set.</li>
+<li>level - The level threshold for this Handler. See the java.util.logging.Level class for the possible levels. Default value: ALL</li>
+<li>filter - The java.util.logging.Filter implementation class name for this Handler. Default value: unset</li>
+<li>formatter - The java.util.logging.Formatter implementation class name for this Handler. Default value: java.util.logging.SimpleFormatter</li>
+<li>maxDays - The maximum number of days to keep the log files. If the specified value is &lt;=0 then the log files will be kept on the file system forever, otherwise they will be kept the specified maximum days. Default value: -1.</li>
+</ul>
+<pre><code>1catalina.org.apache.juli.AsyncFileHandler.level = FINE
+1catalina.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+1catalina.org.apache.juli.AsyncFileHandler.prefix = catalina.
+1catalina.org.apache.juli.AsyncFileHandler.rotatable = true
+1catalina.org.apache.juli.AsyncFileHandler.maxDays  = 7
+
+2localhost.org.apache.juli.AsyncFileHandler.level = FINE
+2localhost.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+2localhost.org.apache.juli.AsyncFileHandler.prefix = localhost.
+
+3manager.org.apache.juli.AsyncFileHandler.level = FINE
+3manager.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+3manager.org.apache.juli.AsyncFileHandler.prefix = manager.
+
+4host-manager.org.apache.juli.AsyncFileHandler.level = FINE
+4host-manager.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+4host-manager.org.apache.juli.AsyncFileHandler.prefix = host-manager.
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/Tags/java/" rel="tag"># java</a>
+          
+            <a href="/Tags/配置与优化/" rel="tag"># 配置与优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/27/spring-boot+ehcache+hibernate-seconde-level-cache/" rel="next" title="spring boot集成ehcache 2.x 用于hibernate二级缓存">
+                <i class="fa fa-chevron-left"></i> spring boot集成ehcache 2.x 用于hibernate二级缓存
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/27/容器生态概览/" rel="prev" title="容器技术生态概览">
+                容器技术生态概览 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/assets/img/icon.jpg"
+                alt="yangjinfeng" />
+            
+              <p class="site-author-name" itemprop="name">yangjinfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yiduyangyi" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yangjinfeng21@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM常用配置"><span class="nav-number">1.</span> <span class="nav-text">JVM常用配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomcat常用配置"><span class="nav-number">2.</span> <span class="nav-text">Tomcat常用配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Executor配置"><span class="nav-number">2.1.</span> <span class="nav-text">Executor配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connector设置"><span class="nav-number">2.2.</span> <span class="nav-text">Connector设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打开GC日志"><span class="nav-number">3.</span> <span class="nav-text">打开GC日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat日志配置"><span class="nav-number">3.1.</span> <span class="nav-text">tomcat日志配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangjinfeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
